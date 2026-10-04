@@ -1,0 +1,24 @@
+[Unit]
+Description=ONyc Watch Telegram bot
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=onyc-watch
+Group=onyc-watch
+WorkingDirectory=/var/lib/onyc-watch
+EnvironmentFile=/etc/onyc-watch/bot.env
+ExecStart=/opt/onyc-watch/onyc-watch
+Restart=on-failure
+RestartSec=5
+TimeoutStopSec=30
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/onyc-watch
+
+[Install]
+WantedBy=multi-user.target
