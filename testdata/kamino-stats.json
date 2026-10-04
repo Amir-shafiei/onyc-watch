@@ -1,0 +1,136 @@
+{
+  "token": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+  "collateralMintAddress": "DBieuGmP1xh36oZRwTtw722yJ8pzZ8wycYD9nY2BSxwn",
+  "rateType": "variable",
+  "fixedTerm": null,
+  "debtMaturityTimestamp": null,
+  "status": "Active",
+  "interestRateBasis": "trueApr",
+  "hostFixedInterestRateBps": 0,
+  "protocolTakeRatePct": 10,
+  "supplyApy": {
+    "current": "0.05824730846525572",
+    "avg7d": "0.06945511670022370323",
+    "avg14d": "0.06784014623739529647",
+    "avg30d": "0.06439405860462333665",
+    "avg60d": "0.06595973690626630517",
+    "avg90d": "0.06658521117561348764",
+    "avg180d": "0.06343772348608406376"
+  },
+  "borrowApy": {
+    "current": "0.07476281680279961",
+    "avg7d": "0.08407368899533607458",
+    "avg14d": "0.08234855353131998647",
+    "avg30d": "0.07969254135725224325",
+    "avg60d": "0.08064827839968178558",
+    "avg90d": "0.08126186929432700993",
+    "avg180d": "0.07877473387707587253"
+  },
+  "underlyingApy": null,
+  "supplyApyBreakdown": {
+    "lending": "0.05824730846525572",
+    "incentives": "0.0012480181587784608",
+    "seasonRewards": "0",
+    "underlying": "0",
+    "total": "0.0594953266240341808"
+  },
+  "borrowApyBreakdown": {
+    "borrow": "0.07476281680279961",
+    "incentives": "0.0033408780425935086",
+    "seasonRewards": "0",
+    "total": "0.0714219387602061014"
+  },
+  "utilization": {
+    "current": "0.8724620364765250504261535870155531356623",
+    "avg30d": "0.90128748010237635980234296579181",
+    "avg90d": "0.91391873252192885899723461251421",
+    "avg180d": "0.89561763153421521464231060548709",
+    "avg365d": "0.8533062893609451770933433070048993"
+  },
+  "autoDeleverage": {
+    "reserve": {
+      "enabled": false,
+      "marginCallPeriodSecs": 604800,
+      "thresholdDecreaseBpsPerDay": 7200,
+      "bonusIncreaseBpsPerDay": 0,
+      "minBonusBps": 0
+    },
+    "market": {
+      "enabled": false,
+      "individualMarginCallPeriodSecs": 0
+    }
+  },
+  "supplyRewardApys": [
+    {
+      "rewardToken": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "farm": "GNcywqL6AZajsyyitxGQUvbihPgAzGZUqKfjYcvTj2pi",
+      "apy": "0.0012480181587784608",
+      "tokensPerSecond": "0.002894"
+    }
+  ],
+  "borrowRewardApys": [
+    {
+      "rewardToken": "EPjFWdd5AufqSSqeM2qN1xzybapC8G4wEGGkZwyTDt1v",
+      "farm": "7vNfe1qX8iDxP5p3A4fosrjLqdn1YjmmGcZZkG2b4APF",
+      "apy": "0.0033408780425935086",
+      "tokensPerSecond": "0.006752"
+    }
+  ],
+  "pairIncentives": [],
+  "pointsPrograms": [],
+  "liquidityAvailable": "9424733.313111",
+  "liquidityAvailableUsd": "9424733.313111",
+  "actualAvailableLiquidity": "2015051.5943547609295",
+  "actualAvailableLiquidityUsd": "2015051.5943547609295",
+  "utilizationLimitBlockBorrowingAbovePct": 90,
+  "borrowCaps": {
+    "utilization": {
+      "limitPct": 90,
+      "currentPct": "87.24620364765251"
+    },
+    "netWithdrawal": {
+      "capacity": "10000000",
+      "currentTotal": "-91285.437519",
+      "intervalLengthSeconds": 86400,
+      "lastIntervalStartTimestamp": "2026-10-01T21:14:14.000Z"
+    },
+    "globalDebt": {
+      "capacity": "90000000",
+      "currentTotal": "63841177.51181412276626040093321316076791"
+    },
+    "debtOutsideElevationGroup": {
+      "capacity": null,
+      "currentTotal": "63352502.675874"
+    },
+    "debtAgainstCollateral": []
+  },
+  "totalSupply": "73173587.895743208137",
+  "totalSupplyUsd": "73173587.895743208137",
+  "totalBorrow": "63841177.51181412276626040093321316076791",
+  "totalBorrowUsd": "63841177.51181412276626040093321316076791",
+  "liqLTV": "0",
+  "maxLTV": "0",
+  "borrowFactor": "1",
+  "depositLimit": "100000000",
+  "borrowLimit": "90000000",
+  "minLiquidationBonus": "0.05",
+  "liquidationMaxDebtCloseFactorPct": 20,
+  "limits": {
+    "depositWithdrawalCap": {
+      "capacity": "10000000",
+      "currentTotal": "-3029954.014712",
+      "intervalLengthSeconds": 86400,
+      "lastIntervalStartTimestamp": "2026-10-02T05:35:11.000Z"
+    },
+    "debtWithdrawalCap": {
+      "capacity": "10000000",
+      "currentTotal": "-91285.437519",
+      "intervalLengthSeconds": 86400,
+      "lastIntervalStartTimestamp": "2026-10-01T21:14:14.000Z"
+    }
+  },
+  "proofOfReserves": {
+    "verified": true,
+    "address": "8BkQTZsT8ssKMU643De4iiV5Wf3pENdUFTsdtHPueKjB"
+  }
+}

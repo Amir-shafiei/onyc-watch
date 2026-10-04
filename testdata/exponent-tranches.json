@@ -1,0 +1,90 @@
+[
+  {
+    "address": "HM8iLNE2WEN6J1AuwSSCoM37wgeLQFwYZ4ymYLqAoapN",
+    "startDateUnixTs": 1781705283,
+    "categories": [
+      "Stablecoins"
+    ],
+    "marketState": 1,
+    "statusFlags": 0,
+    "syMint": "G1qbuP11CdquJCzuDjruWqatQAHroajmxhLfeQVgHosF",
+    "syProgram": "XP1BRLn8eCYSygrd8er5P4GKdzqKbC3DLoSsS5UYVZy",
+    "mintLpSenior": "9J8VvigcjFTkN3jhZH2ieTi2hdGVBVpEXbcA1JDo7QpA",
+    "mintLpJunior": "71j6BZaUPaSG1f1Y3e12KvU66d23kHgzWXhMDHn23wyB",
+    "tokenSyEscrow": "HZ7iDTzNcRKNfMTioG9NbxExtUuScrocHbSMrj7WfVdt",
+    "addressLookupTable": "6xy7xgTMANTqg7XLk2Z5pSuDotqFzgxanLQpftAR2iYV",
+    "selfAddress": "HM8iLNE2WEN6J1AuwSSCoM37wgeLQFwYZ4ymYLqAoapN",
+    "mintBase": "5Y8NV33Vv7WbnLfq3zBcKSdYPrk7g2KoiQoe7M2tcxp5",
+    "quoteAssetMint": "USD1111111111111111111111111111111111111119",
+    "quoteAssetSymbol": "USD",
+    "syDecimals": 9,
+    "platform": "onrefinance",
+    "baseTokenSymbol": "ONyc",
+    "decimals": 9,
+    "platformName": "OnRe",
+    "subPlatformName": "",
+    "marketSize": "7247050.3703519600924",
+    "effectiveMarketSize": "7247050.3703519600924",
+    "srRawNetAssetValue": "5117325.2834142535655",
+    "jrRawNetAssetValue": "2129725.0869377065269",
+    "srEffectiveNetAssetValue": "5105886.0030629569548",
+    "jrEffectiveNetAssetValue": "2141164.3672890031375",
+    "srLpCapacity": "0.000008377494097547462",
+    "jrLpCapacity": "0.000003861449053073302",
+    "srRemainingLpCapacity": "0.000003383186968808867",
+    "jrRemainingLpCapacity": "0.000001827330898509685",
+    "srLpPriceNetAsset": "1.022341211993",
+    "jrLpPriceNetAsset": "1.052625366174",
+    "srSyncedLpPriceNetAsset": "1.022341211993",
+    "jrSyncedLpPriceNetAsset": "1.052625366174",
+    "srSyncedLpPriceNetAssetRaw": "1022341211993",
+    "jrSyncedLpPriceNetAssetRaw": "1052625366174",
+    "srMaxCapacityNetAssetValue": "8564657.4691508760699",
+    "jrMaxCapacityNetAssetValue": "4064659.2234535300778",
+    "srRemainingCapacityNetAssetValue": "3458771.4660909809763",
+    "jrRemainingCapacityNetAssetValue": "1923494.856164821604",
+    "underlyingApy": 0.11019044295672353,
+    "underlyingApyPeriodLabel": "Last 7d",
+    "underlyingApyLookbacks": [
+      {
+        "label": "30D trailing APY",
+        "value": 0.11305730133685543
+      },
+      {
+        "label": "7D trailing APY",
+        "value": 0.11019044295672353
+      },
+      {
+        "label": "1D trailing APY",
+        "value": 0.11019461827971955
+      }
+    ],
+    "underlyingApy7d": 0.11019044295672353,
+    "underlyingApy30d": 0.11305730133685543,
+    "utilizationPct": 67.6926113761,
+    "coverageRatio": "0.29545321998155444",
+    "minCoverageRatio": "0.2",
+    "targetUtilizationPct": 0.9,
+    "currentSyExchangeRate": 1.151543529,
+    "seniorApy": 0.074325321230681,
+    "juniorApy": 0.18279844402194068,
+    "seniorPointsBoost": {
+      "platform": "onrefinance",
+      "pointsName": "OnRe Points",
+      "multiplier": 1,
+      "pointsPerDay": 1,
+      "type": "sy"
+    },
+    "juniorPointsBoosts": [
+      {
+        "platform": "onrefinance",
+        "pointsName": "OnRe Points",
+        "multiplier": 6,
+        "pointsPerDay": 1,
+        "type": "sy"
+      }
+    ],
+    "discoveryOrder": null,
+    "releaseDateUnixTs": 1781705283
+  }
+]
