@@ -1,0 +1,9 @@
+.env
+data/
+bin/
+server/onyc-watch-linux-*
+server/*.tar.gz
+verification/
+*.exe
+*.log
+.tmp/
