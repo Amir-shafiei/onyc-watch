@@ -2,6 +2,30 @@
 
 An English Telegram bot, written in Go, for Exponent ONyc yield markets and USDC borrowing liquidity on Kamino and Loopscale. No wallet, signature or seed phrase is needed.
 
+## Version 1.8
+
+- **Current AUM:** OnRe's live USD AUM, cached in the background with fetch time and stale/unavailable labels.
+- **My Alerts:** up to 30 independent APY targets and maturity reminders per user, with individual edit, pause/resume and delete controls.
+- **Above / Below:** explicit inclusive target direction; a successfully delivered APY target removes only that alert.
+- **Maturity Reminders:** opt-in market reminders at 7 days and 1 day remaining. Joining within the final day sends only the 1-day reminder.
+- **New Market Alerts:** opt-in discovery notifications for Exponent, Kamino and Loopscale. Each provider's initial successful snapshot is silently baselined. An outage does not reset that baseline.
+
+Commands added: `/aum`, `/alerts`, `/maturities`, `/newmarkets`. Existing v1.7 subscriptions remain accessible through My Alerts. Global Pause applies to all notifications. An already-sending message may still arrive. New APY rules are independent of My Markets display filters.
+
+The AUM source is `https://core.api.onre.finance/data/live-tvl`, also used by the official OnRe frontend. Fetch time is not the upstream valuation time. Market discovery means first seen by this bot, not a verified launch timestamp. Maturity reminders describe a selected market, not a connected wallet position.
+
+### Update an existing Ubuntu installation
+
+From the source checkout, fetch the new code and run `bash server/update.sh`. Do not rerun the fresh-install script. The updater tests and builds first, then stops the service briefly to back up its executable, token, service file and state under `/var/backups/onyc-watch/`. It preserves the existing production token and user state, validates the new process for 30 seconds, and attempts to restore the previous executable and state if startup fails. It does not prove external APIs or Telegram are reachable: also test the bot in Telegram after updating.
+
+```sh
+cd /opt/onyc-watch-src
+git pull --ff-only origin main
+bash server/update.sh
+```
+
+If the first installation needed a manual CRLF fix, save those local script changes with `git stash push -m before-v1.8-update -- server/install.sh server/onyc-watch.service` before pulling. The repository now enforces LF line endings for Linux scripts.
+
 ## Start on Windows
 
 1. Create a bot using the official [@BotFather](https://t.me/BotFather) and copy its token.

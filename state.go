@@ -9,8 +9,15 @@ import (
 )
 
 type User struct {
-	ChatID int64
-	Paused bool
+	Rules         []WatchRule
+	RuleSequence  uint64
+	RuleEdit      string
+	RuleDirection string
+	NewMarkets    bool
+	SeenMarkets   map[string]bool
+	SeededSources map[string]bool
+	ChatID        int64
+	Paused        bool
 	// Disabled flags preserve existing subscriptions when loading older state files.
 	APYAlertsDisabled  bool
 	USDCAlertsDisabled bool

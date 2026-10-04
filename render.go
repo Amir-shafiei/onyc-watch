@@ -129,6 +129,15 @@ func settingsText(u *User) string {
 	if u.USDCAlertsDisabled {
 		usdcStatus = "Disabled"
 	}
+	if u.APYMarketID == "" {
+		active := 0
+		for _, r := range u.Rules {
+			if !r.Disabled {
+				active++
+			}
+		}
+		return fmt.Sprintf("Alert Settings\nStatus: %s\nMy Alerts: %d saved, %d enabled\nUSDC alerts: %s\nMinimum USDC: %.2f\nMaximum borrow APY: %s\n\nOpen My Alerts to add or manage independent APY targets and maturity reminders.\nTargets include equality and are removed after successful delivery.\nMaturity reminders are sent at 7 days and 1 day remaining.\nLoopscale rate filters require a fresh quote covering your minimum amount.", status, len(u.Rules), active, usdcStatus, u.MinUSDC, cap)
+	}
 	return fmt.Sprintf("🔔 Alert Settings\nStatus: %s\nAPY alerts: %s\nAPY market: %s\nUSDC alerts: %s\nAPY threshold: %s\nAPY change: %.2f percentage points\nMinimum USDC: %.2f\nMaximum borrow APY: %s\n\nAPY threshold uses the displayed metric: implied APY for YT, tranche APY for sr/jr.\nLoopscale rate filters require a fresh quote covering your minimum USDC amount.\nAlerts fire on condition entry, not every poll.", status, apyStatus, market, usdcStatus, threshold, u.APYChange, u.MinUSDC, cap)
 }
 

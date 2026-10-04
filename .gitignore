@@ -1,4 +1,8 @@
 .env
+.env.*
+!.env.example
+server/upload.env
+server/upload-state.json
 data/
 bin/
 server/onyc-watch-linux-*

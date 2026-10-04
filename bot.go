@@ -17,6 +17,7 @@ import (
 var products = []struct{ key, label string }{{"yt-onyc", "YT ONyc"}, {"yt-sronyc", "YT srONyc"}, {"sronyc", "srONyc"}, {"jronyc", "jrONyc"}}
 
 type Bot struct {
+	aum       aumCache
 	Config    Config
 	API       *API
 	TG        *Telegram
@@ -72,7 +73,7 @@ func alertSwitch(label, key string, disabled bool) Button {
 }
 func settingsKeyboard(u *User) *Keyboard {
 	return &Keyboard{Rows: [][]Button{
-		{{Text: "APY Alert", Data: "apyalert"}},
+		{{Text: "My Alerts", Data: "watch"}},
 		{alertSwitch("USDC", "usdc", u.USDCAlertsDisabled)},
 		{{Text: "Set Minimum USDC", Data: "set:amount"}, {Text: "Set Max Borrow APY", Data: "set:borrow"}},
 		{{Text: "← Main Menu", Data: "home"}},
@@ -195,6 +196,9 @@ func (b *Bot) handle(ctx context.Context, up Update) error {
 		b.State.Users[id] = u
 	}
 	text := strings.TrimSpace(msg.Text)
+	if handled, err := b.handleWatch(ctx, u, action, text); handled {
+		return err
+	}
 	if action == "" {
 		cmd := strings.Fields(text)
 		if len(cmd) > 0 {
@@ -392,7 +396,15 @@ type alertDelivery struct {
 }
 
 func preferences(u *User, key string) string {
+	if strings.HasPrefix(key, "watch:") || strings.HasPrefix(key, "new:") {
+		return watchPreferences(u, key)
+	}
 	copy := *u
+	copy.Rules = nil
+	copy.RuleSequence = 0
+	copy.RuleEdit, copy.RuleDirection = "", ""
+	copy.NewMarkets = false
+	copy.SeenMarkets, copy.SeededSources = nil, nil
 	copy.Alerts = nil
 	copy.Pending = ""
 	copy.PendingMarketID, copy.PendingMarketName = "", ""
@@ -446,6 +458,9 @@ func (b *Bot) finishAlert(r alertDelivery) {
 		return
 	}
 	if u != r.user || preferences(u, r.alert.Key) != r.preferences {
+		return
+	}
+	if finishWatch(u, r.alert) {
 		return
 	}
 	// A delivered APY alert is one-shot, even if the market moved during delivery.
@@ -509,6 +524,7 @@ func (b *Bot) run(ctx context.Context) error {
 	cacheCtx, stopCache := context.WithCancel(ctx)
 	defer stopCache()
 	b.Cache.start(cacheCtx, b.API.jobs(), b.Config.PollInterval)
+	go b.refreshAUM(cacheCtx)
 	b.delivery = make(chan alertDelivery, 1)
 	// Poll independently of outgoing alerts; acknowledge offsets only after persistence.
 	polls := make(chan pollResult)

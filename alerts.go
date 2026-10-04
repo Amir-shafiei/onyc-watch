@@ -24,7 +24,7 @@ func evaluateAlerts(u *User, s Snapshot, now time.Time, c Config) []Alert {
 	if u.Paused {
 		return nil
 	}
-	var out []Alert
+	out := evaluateWatch(u, s, now, c)
 	for _, y := range s.Yields {
 		if u.APYMarketID != y.ID || u.APYAlertsDisabled || !u.Products[y.Product] || u.Muted[y.ID] || !yieldUsable(s, y, now, c.StaleAfter) {
 			continue

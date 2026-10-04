@@ -114,6 +114,8 @@ func (t *Telegram) updates(ctx context.Context, offset int64) ([]Update, error) 
 
 func homeKeyboard() *Keyboard {
 	return &Keyboard{Rows: [][]Button{
+		{{Text: "Current AUM", Data: "aum"}, {Text: "My Alerts", Data: "watch"}},
+		{{Text: "Maturity Reminders", Data: "maturities"}, {Text: "New Market Alerts", Data: "newmarkets"}},
 		{{Text: "📊 Current APY", Data: "apy"}, {Text: "💵 USDC Availability", Data: "usdc"}},
 		{{Text: "🔔 Alert Settings", Data: "settings"}, {Text: "⭐ My Markets", Data: "markets"}},
 		{{Text: "🔄 Refresh", Data: "refresh"}, {Text: "⏸ Pause / Resume", Data: "pause"}},
