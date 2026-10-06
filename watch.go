@@ -27,6 +27,14 @@ func ruleByID(u *User, id string) *WatchRule {
 	}
 	return nil
 }
+func ruleDisplayNumber(u *User, id string) int {
+	for i, r := range u.Rules {
+		if r.ID == id {
+			return i + 1
+		}
+	}
+	return 0
+}
 func addRule(u *User, r WatchRule) {
 	u.RuleSequence++
 	r.ID = strconv.FormatUint(u.RuleSequence, 10)
@@ -197,8 +205,9 @@ func watchList(u *User) (string, *Keyboard) {
 		if r.Kind == "maturity" && !r.Maturity.After(time.Now()) {
 			state = "Expired"
 		}
-		text += fmt.Sprintf("\n#%s %s\n%s · %s\n", r.ID, r.Name, condition, state)
-		k.Rows = append(k.Rows, []Button{{Text: "Manage #" + r.ID, Data: "wview:" + r.ID}})
+		number := ruleDisplayNumber(u, r.ID)
+		text += fmt.Sprintf("\n#%d %s\n%s · %s\n", number, r.Name, condition, state)
+		k.Rows = append(k.Rows, []Button{{Text: fmt.Sprintf("Manage #%d", number), Data: "wview:" + r.ID}})
 	}
 	if len(u.Rules) == 0 {
 		text += "\nNo saved alerts."
@@ -329,7 +338,7 @@ func (b *Bot) handleWatch(ctx context.Context, u *User, action, text string) (bo
 			k.Rows = append(k.Rows, []Button{{Text: "Edit target / direction", Data: "wedit:" + r.ID}})
 		}
 		k.Rows = append(k.Rows, []Button{{Text: "Back", Data: "watch"}})
-		return send("Manage #"+r.ID+"\n"+r.Name, k)
+		return send(fmt.Sprintf("Manage #%d\n%s", ruleDisplayNumber(u, r.ID), r.Name), k)
 	}
 	if action == "newmarkets" || action == "newtoggle" {
 		if action == "newtoggle" {

@@ -39,20 +39,52 @@ func mark(b bool) string {
 func keyHash(s string) string { return fmt.Sprintf("%x", sha256.Sum256([]byte(s)))[:16] }
 func marketKeyboard(u *User, s Snapshot) *Keyboard {
 	k := &Keyboard{}
-	for _, p := range products {
-		k.Rows = append(k.Rows, []Button{{Text: mark(u.Products[p.key]) + p.label, Data: "product:" + p.key}})
+	for _, m := range s.Yields {
+		k.Rows = append(k.Rows, []Button{{Text: mark(u.Products[m.Product] && !u.Muted[m.ID]) + yieldTitle(m), Data: "market:" + keyHash(m.ID)}})
 	}
 	for _, p := range []string{"Kamino", "Loopscale"} {
-		k.Rows = append(k.Rows, []Button{{Text: mark(u.Platforms[p]) + p + " USDC alerts", Data: "platform:" + p}})
-	}
-	for _, m := range s.Yields {
-		k.Rows = append(k.Rows, []Button{{Text: mark(!u.Muted[m.ID]) + yieldTitle(m), Data: "market:" + keyHash(m.ID)}})
-	}
-	for _, m := range s.Borrows {
-		k.Rows = append(k.Rows, []Button{{Text: mark(!u.Muted[m.ID]) + m.Platform + " " + m.Name + " " + m.Term, Data: "market:" + keyHash(m.ID)}})
+		k.Rows = append(k.Rows, []Button{{Text: p + " Markets →", Data: "markets:" + p}})
 	}
 	k.Rows = append(k.Rows, []Button{{Text: "← Main Menu", Data: "home"}})
 	return k
+}
+
+func borrowMarketKeyboard(u *User, s Snapshot, platform string) *Keyboard {
+	k := &Keyboard{}
+	for _, m := range s.Borrows {
+		if m.Platform == platform {
+			k.Rows = append(k.Rows, []Button{{Text: mark(u.Platforms[platform] && !u.Muted[m.ID]) + m.Name + " " + m.Term, Data: "market:" + keyHash(m.ID)}})
+		}
+	}
+	k.Rows = append(k.Rows, []Button{{Text: "← My Markets", Data: "markets"}})
+	return k
+}
+
+// Flatten a disabled legacy group when selecting a market, preserving its
+// siblings' effective selections instead of silently enabling the entire group.
+func toggleYieldMarket(u *User, s Snapshot, m YieldMarket) {
+	selected := u.Products[m.Product] && !u.Muted[m.ID]
+	if !u.Products[m.Product] {
+		for _, sibling := range s.Yields {
+			if sibling.Product == m.Product {
+				u.Muted[sibling.ID] = true
+			}
+		}
+		u.Products[m.Product] = true
+	}
+	u.Muted[m.ID] = selected
+}
+func toggleBorrowMarket(u *User, s Snapshot, m BorrowMarket) {
+	selected := u.Platforms[m.Platform] && !u.Muted[m.ID]
+	if !u.Platforms[m.Platform] {
+		for _, sibling := range s.Borrows {
+			if sibling.Platform == m.Platform {
+				u.Muted[sibling.ID] = true
+			}
+		}
+		u.Platforms[m.Platform] = true
+	}
+	u.Muted[m.ID] = selected
 }
 func apyMarketKeyboard(s Snapshot, mode string) *Keyboard {
 	k := &Keyboard{}
@@ -334,17 +366,18 @@ func (b *Bot) handle(ctx context.Context, up Update) error {
 	}
 	if strings.HasPrefix(action, "market:") {
 		hash := strings.TrimPrefix(action, "market:")
+		action = "markets"
 		for _, m := range b.State.Snapshot.Yields {
 			if keyHash(m.ID) == hash {
-				u.Muted[m.ID] = !u.Muted[m.ID]
+				toggleYieldMarket(u, b.State.Snapshot, m)
 			}
 		}
 		for _, m := range b.State.Snapshot.Borrows {
 			if keyHash(m.ID) == hash {
-				u.Muted[m.ID] = !u.Muted[m.ID]
+				toggleBorrowMarket(u, b.State.Snapshot, m)
+				action = "markets:" + m.Platform
 			}
 		}
-		action = "markets"
 	}
 	switch action {
 	case "alerts:apy:disable", "alerts:apy:enable", "alerts:usdc:disable", "alerts:usdc:enable":
@@ -374,7 +407,10 @@ func (b *Bot) handle(ctx context.Context, up Update) error {
 	case "usdc":
 		return b.TG.send(ctx, id, borrowText(b.State.Snapshot, u, b.Config, time.Now()), homeKeyboard())
 	case "markets":
-		return b.TG.send(ctx, id, "⭐ My Markets\nToggle products, platforms or individual markets. Checked = watched. A product/platform must also be enabled for its market alerts.", marketKeyboard(u, b.State.Snapshot))
+		return b.TG.send(ctx, id, "⭐ My Markets\nSelect markets shown in Current APY and USDC Availability.\nAPY targets and maturity reminders in My Alerts are independent of these selections.\nUSDC alerts and existing v1.7 APY alerts still follow market selections.", marketKeyboard(u, b.State.Snapshot))
+	case "markets:Kamino", "markets:Loopscale":
+		platform := strings.TrimPrefix(action, "markets:")
+		return b.TG.send(ctx, id, platform+" Markets\nChecked markets appear in USDC Availability and are eligible for USDC alerts when those alerts are enabled in Settings.", borrowMarketKeyboard(u, b.State.Snapshot, platform))
 	case "pause":
 		u.Paused = !u.Paused
 		return b.TG.send(ctx, id, settingsText(u), settingsKeyboard(u))
