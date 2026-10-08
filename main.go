@@ -23,6 +23,8 @@ func main() {
 func run() error {
 	check := flag.Bool("check", false, "Fetch all live sources once and print JSON; no Telegram token needed")
 	preview := flag.Bool("preview", false, "Fetch live sources and print the English bot messages; no token needed")
+	solvencyCheck := flag.Bool("solvency-check", false, "Fetch and render live OnRe solvency data; no Telegram messages")
+	priceCheck := flag.Bool("price-check", false, "Fetch official ONyc NAV without sending Telegram messages")
 	flag.Parse()
 	c, err := loadConfig()
 	if err != nil {
@@ -31,6 +33,32 @@ func run() error {
 	ctx, stop := signal.NotifyContext(context.Background(), os.Interrupt, syscall.SIGTERM)
 	defer stop()
 	api := newAPI()
+	if *priceCheck {
+		child, cancel := context.WithTimeout(ctx, 20*time.Second)
+		defer cancel()
+		v, err := fetchPrice(child, api.Client, onrePriceURL)
+		if err != nil {
+			return err
+		}
+		b := &Bot{Config: c}
+		b.publishPrice(v, nil, time.Now())
+		fmt.Println(b.priceText(time.Now()))
+		return nil
+	}
+	if *solvencyCheck {
+		child, cancel := context.WithTimeout(ctx, 25*time.Second)
+		defer cancel()
+		d, err := fetchSolvency(child, api.Client, solvencyURL)
+		if err != nil {
+			return err
+		}
+		b := &Bot{}
+		b.solvency.publish(d, nil, time.Now())
+		for _, section := range []string{"overview", "reserves", "allocation", "sources"} {
+			fmt.Println(b.solvencyText(section, time.Now()))
+		}
+		return nil
+	}
 	if *check || *preview {
 		s := api.collect(ctx)
 		if *check {

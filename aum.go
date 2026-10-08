@@ -81,5 +81,5 @@ func (b *Bot) aumText() string {
 	if b.aum.failed || !isFresh(b.aum.fetched, time.Now(), b.Config.StaleAfter) {
 		flag = " [STALE / UNAVAILABLE]"
 	}
-	return fmt.Sprintf("Current AUM%s\nOnRe: $%.2f million\nUSD: %.2f\n%s\nSource: OnRe live AUM. Fetch time is not the upstream valuation time.", flag, b.aum.value/1e6, b.aum.value, updated(b.aum.fetched))
+	return fmt.Sprintf("Current AUM%s\nOnRe: $%.2f million\nUSD: %s\n%s\nSource: OnRe live AUM. Fetch time is not the upstream valuation time.", flag, b.aum.value/1e6, formatAmount(b.aum.value), updated(b.aum.fetched))
 }

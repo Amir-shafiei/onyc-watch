@@ -101,7 +101,7 @@ func evaluateAlerts(u *User, s Snapshot, now time.Time, c Config) []Alert {
 		if !st.Active && now.Sub(st.LastSent) >= c.Cooldown {
 			st.Active = true
 			st.LastSent = now
-			text := fmt.Sprintf("💵 USDC availability alert\n%s · %s\nReported capacity: %.2f USDC\nBorrow APY: %s\nBasis: %s\n%s\nNot reserved; check the market before borrowing.\n%s", b.Platform, b.Name, *b.AvailableUSDC, rate(b.BorrowAPY), b.Basis+quoteText, updated(b.FetchedAt), b.URL)
+			text := fmt.Sprintf("💵 USDC availability alert\n%s · %s\nReported capacity: %s USDC\nBorrow APY: %s\nBasis: %s\n%s\nNot reserved; check the market before borrowing.\n%s", b.Platform, b.Name, formatAmount(*b.AvailableUSDC), rate(b.BorrowAPY), b.Basis+quoteText, updated(b.FetchedAt), b.URL)
 			out = append(out, Alert{Key: k, Text: text, NewState: st})
 		}
 	}

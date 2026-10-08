@@ -181,3 +181,47 @@ USDC views display the lowest fresh quoted APY with sufficient capacity for the 
 The adapter queries up to 100 lowest-rate offers per collateral per term, with four concurrent requests and six-second request deadlines. It does not aggregate offers or estimate a blended execution rate. It may miss qualifying offers beyond that sample or terms outside the four supported durations. Partial term failures are disclosed; failed quotes are not reused as current rates. Quote requests run inside the background source refresh, never in a Telegram button handler.
 
 Contracts: [Get quotes](https://docs.loopscale.com/api-reference/data/markets/get-quotes), [Loop metrics](https://docs.loopscale.com/api-reference/guides/vault-and-loop-metrics). Rate conversion and duration enums were additionally verified against the official app bundle `https://app.loopscale.com/main.70b5674bfc2bf3bd.js`: `convertOrderbookQuote` uses `DM(raw) = raw / 1e6` as a fraction, so this app's percentage representation uses `raw / 1e4` (79500 → 7.95%). LTV likewise uses `raw / 1e4`; USDC amounts use `raw / 1e6`. Duration types are Days=0, Weeks=1, Months=2. The API page's APY-range description alone should not be used to infer the returned rate scaling.
+
+
+## Proof of Solvency (v1.9)
+
+Open **Proof of Solvency** or send `/solvency` for OnRe-only Overview,
+Reserve Breakdown, Capital Allocation, and Verification & Sources.
+The dashboard link appears only in this submenu. Data is fetched in the
+background every five minutes; button handlers read the cache immediately.
+
+The production frontend config and bundle inspected on 2026-10-08 select
+`https://onre.accountable.capital:8443/dashboard`. This public frontend endpoint
+is not a guaranteed versioned API. The adapter requires ONyc supply identity,
+valid totals and a source timestamp. No fixture data is used at runtime.
+
+Collateralization is a ratio (1.009904 becomes 100.99%). Supply is USD value,
+not token count. Every displayed asset/venue percentage uses total reserves
+as denominator. On/off-chain classification comes from the source allocation
+map. AUM remains a separate metric and source.
+
+Both dashboard retrieval and bot fetch timestamps are shown in UTC. A failed
+fetch retains the last snapshot with a stale label; a dashboard snapshot older
+than 30 minutes, more than five minutes ahead of the clock, or a bot fetch older
+than 15 minutes is flagged. Individual source timing is evaluated separately:
+15 MIN, DAILY and WEEKLY schedules get a 50% grace period. Unknown schedules
+are not rated. This timing status is not a security or solvency assessment.
+Unsigned reports retain that label. The bot does not independently validate
+Accountable signatures, Merkle roots or zero-knowledge proofs.
+
+Test without sending any Telegram messages: `go run . -solvency-check`.
+The fixture in `testdata/solvency.json` is a public response captured 2026-10-08
+with unused attestations and historical timeline omitted.
+
+
+## ONyc Price (v1.9.2)
+
+Use **ONyc Price** or `/price` for the official NAV per ONyc in USD, shown
+with six decimal places. The bot polls `https://core.api.onre.finance/data/live-nav`
+every 60 seconds independently of market and solvency requests. Button clicks
+read cached data. This is NAV, not an executable swap quote. The endpoint supplies
+no valuation timestamp: the message labels the bot fetch time explicitly.
+Failures retain the last price with a stale/unavailable label; cached data also
+expires according to STALE_AFTER. No user state or token migration is required.
+
+`go run . -price-check` fetches and renders NAV without Telegram messages.

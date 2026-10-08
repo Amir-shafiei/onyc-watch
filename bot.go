@@ -18,6 +18,8 @@ var products = []struct{ key, label string }{{"yt-onyc", "YT ONyc"}, {"yt-sronyc
 
 type Bot struct {
 	aum       aumCache
+	price     aumCache
+	solvency  solvencyCache
 	Config    Config
 	API       *API
 	TG        *Telegram
@@ -228,6 +230,9 @@ func (b *Bot) handle(ctx context.Context, up Update) error {
 		b.State.Users[id] = u
 	}
 	text := strings.TrimSpace(msg.Text)
+	if handled, err := b.handleSolvency(ctx, u, action, text); handled {
+		return err
+	}
 	if handled, err := b.handleWatch(ctx, u, action, text); handled {
 		return err
 	}
@@ -241,6 +246,8 @@ func (b *Bot) handle(ctx context.Context, up Update) error {
 		switch cmd[0] {
 		case "/start", "/help":
 			action = "home"
+		case "/price":
+			action = "price"
 		case "/apy":
 			action = "apy"
 		case "/usdc":
@@ -394,6 +401,8 @@ func (b *Bot) handle(ctx context.Context, up Update) error {
 	case "cancelsetting":
 		u.Pending, u.PendingMarketID, u.PendingMarketName = "", "", ""
 		return b.TG.send(ctx, id, settingsText(u), settingsKeyboard(u))
+	case "price":
+		return b.TG.send(ctx, id, b.priceText(time.Now()), homeKeyboard())
 	case "home":
 		u.Pending = ""
 		return b.TG.send(ctx, id, "ONyc Watch\n\nTrack Exponent YT ONyc, YT srONyc, srONyc and jrONyc rates, plus reported USDC capacity on Kamino and Loopscale.\n\nUse Current APY for the latest provider snapshot. Configure alerts and choose markets below. No wallet connection is needed.\n\n/stop pauses alerts · /resume resumes · /delete removes your saved settings.", homeKeyboard())
@@ -561,6 +570,8 @@ func (b *Bot) run(ctx context.Context) error {
 	defer stopCache()
 	b.Cache.start(cacheCtx, b.API.jobs(), b.Config.PollInterval)
 	go b.refreshAUM(cacheCtx)
+	go b.refreshPrice(cacheCtx)
+	go b.refreshSolvency(cacheCtx)
 	b.delivery = make(chan alertDelivery, 1)
 	// Poll independently of outgoing alerts; acknowledge offsets only after persistence.
 	polls := make(chan pollResult)

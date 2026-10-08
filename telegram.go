@@ -119,6 +119,8 @@ func homeKeyboard() *Keyboard {
 		{{Text: "📊 Current APY", Data: "apy"}, {Text: "💵 USDC Availability", Data: "usdc"}},
 		{{Text: "🔔 Alert Settings", Data: "settings"}, {Text: "⭐ My Markets", Data: "markets"}},
 		{{Text: "🔄 Refresh", Data: "refresh"}, {Text: "⏸ Pause / Resume", Data: "pause"}},
+		{{Text: "💵 ONyc Price", Data: "price"}},
+		{{Text: "🛡 Proof of Solvency", Data: "solvency"}},
 		{{Text: "Data Status", Data: "status"}},
 	}}
 }

@@ -116,5 +116,5 @@ func matchingLoopQuote(m BorrowMarket, minUSDC float64, maxAPY *float64, now tim
 	return best
 }
 func quoteDescription(q *BorrowQuote) string {
-	return fmt.Sprintf("Quoted borrow APY: %.2f%% · %s\nQuote capacity: %.2f USDC · max LTV: %.2f%%\nQuote fetched: %s", q.APY, q.Term, q.AvailableUSDC, q.LTV, q.FetchedAt.Format("2006-01-02 15:04:05 UTC"))
+	return fmt.Sprintf("Quoted borrow APY: %.2f%% · %s\nQuote capacity: %s USDC · max LTV: %.2f%%\nQuote fetched: %s", q.APY, q.Term, formatAmount(q.AvailableUSDC), q.LTV, q.FetchedAt.Format("2006-01-02 15:04:05 UTC"))
 }
