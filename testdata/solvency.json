@@ -1,0 +1,203 @@
+{
+  "res": "ok",
+  "data": {
+    "collateralization": 1.009904,
+    "reserves": {
+      "verifiability": "100",
+      "interval": "live",
+      "total_reserves": {
+        "value": 296144817.42,
+        "name": "Total Reserves"
+      },
+      "reserves_split": {
+        "Solana": {
+          "USDC (kamino)": {
+            "value": 10099689.57,
+            "tag": "DeFi Lending"
+          },
+          "USDG (kamino)": {
+            "value": 3773027.86,
+            "tag": "DeFi Lending"
+          },
+          "USDC": {
+            "value": 1620911.87,
+            "tag": "Stablecoin"
+          },
+          "USDG": {
+            "value": 68157321.55,
+            "tag": "Stablecoin"
+          },
+          "syrupUSDC": {
+            "value": 11225062.2,
+            "tag": "Private Credit"
+          },
+          "sUSDe": {
+            "value": 5898930.28,
+            "tag": "Yield-Bearing"
+          },
+          "USDv": {
+            "value": 1002031.5,
+            "tag": "Other"
+          }
+        },
+        "Ethereum": {
+          "sUSDe": {
+            "value": 10.74,
+            "tag": "Yield-Bearing"
+          },
+          "sUSDS": {
+            "value": 36578107.19,
+            "tag": "Yield-Bearing"
+          },
+          "USDC": {
+            "value": 10.0,
+            "tag": "Stablecoin"
+          },
+          "USYC": {
+            "value": 871163.98,
+            "tag": "Tokenized Treasury"
+          }
+        },
+        "Clarien Bank": {
+          "USD": {
+            "value": 31665322.6,
+            "tag": "Cash"
+          }
+        },
+        "Bank of New York Mellon": {
+          "USD": {
+            "value": 94563092.08,
+            "tag": "Cash"
+          }
+        },
+        "Radix ILS": {
+          "USD": {
+            "value": 30690136.0,
+            "tag": "Cash"
+          }
+        }
+      },
+      "total_supply": {
+        "fx": 1,
+        "value": 293240663.29,
+        "name": "Total Supply"
+      },
+      "supply_split": {
+        "Solana Mainnet": {
+          "ONyc": {
+            "value": 293240663.29,
+            "tag": "Vault Share"
+          }
+        }
+      },
+      "reserves_breakdown": {
+        "Total Reserves": {
+          "On-Chain": {
+            "Solana": {
+              "USDC (kamino)": 10099689.57,
+              "USDG (kamino)": 3773027.86,
+              "USDC": 1620911.87,
+              "USDG": 68157321.55,
+              "syrupUSDC": 11225062.2,
+              "sUSDe": 5898930.28,
+              "USDv": 1002031.5
+            },
+            "Ethereum": {
+              "sUSDe": 10.74,
+              "sUSDS": 36578107.19,
+              "USDC": 10.0,
+              "USYC": 871163.98
+            }
+          },
+          "Off-Chain": {
+            "Clarien Bank": {
+              "USD": 31665322.6
+            },
+            "Bank of New York Mellon": {
+              "USD": 94563092.08
+            },
+            "Radix ILS": {
+              "USD": 30690136.0
+            }
+          }
+        }
+      }
+    },
+    "net": 2904154.13,
+    "dataSources": {
+      "Ethereum Wallets": {
+        "name": "Ethereum Wallets",
+        "type": "Onchain data",
+        "filter": "assets",
+        "pctOfReserves": 12.65,
+        "frequency": "15 MIN",
+        "lastUpdated": "1791462841018",
+        "categories": [
+          "Ethereum"
+        ],
+        "status": "public"
+      },
+      "Solana Wallets": {
+        "name": "Solana Wallets",
+        "type": "Onchain data",
+        "filter": "assets",
+        "pctOfReserves": 34.37,
+        "frequency": "15 MIN",
+        "lastUpdated": "1791462841018",
+        "categories": [
+          "Solana"
+        ],
+        "status": "public"
+      },
+      "Bank of New York Mellon": {
+        "name": "Bank of New York Mellon",
+        "type": "Report (Unsigned)",
+        "filter": "assets",
+        "pctOfReserves": 31.93,
+        "frequency": "Weekly",
+        "lastUpdated": "1791244800000",
+        "categories": [
+          "Bank of New York Mellon"
+        ],
+        "status": "public"
+      },
+      "Clarien Bank": {
+        "name": "Clarien Bank",
+        "type": "Report (Unsigned)",
+        "filter": "assets",
+        "pctOfReserves": 10.69,
+        "frequency": "Weekly",
+        "lastUpdated": "1791244800000",
+        "categories": [
+          "Clarien Bank"
+        ],
+        "status": "public"
+      },
+      "Radix ILS": {
+        "name": "Radix ILS",
+        "type": "Asset Manager API",
+        "filter": "assets",
+        "pctOfReserves": 10.36,
+        "frequency": "15 MIN",
+        "lastUpdated": "1791462841018",
+        "categories": [
+          "Radix ILS"
+        ],
+        "status": "public"
+      },
+      "ONyc Contract": {
+        "name": "ONyc Contract",
+        "type": "Smart Contract",
+        "filter": "liabilities",
+        "pctOfReserves": 100,
+        "frequency": "15 MIN",
+        "lastUpdated": "1791462841018",
+        "categories": [
+          "Solana Mainnet"
+        ],
+        "status": "public"
+      }
+    },
+    "ts": 1791462841018
+  }
+}
